@@ -15,6 +15,10 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('timer')" :active="request()->routeIs('timer')">Prise de service</x-nav-link>
+                    <x-nav-link :href="route('convoy.index')" :active="request()->routeIs('convoy.index')">Convois</x-nav-link>
+                    <x-nav-link :href="route('roles')" :active="request()->routeIs('roles')">Voir les rôles</x-nav-link>
+                    <x-nav-link :href="route('webhook')" :active="request()->routeIs('webhook')">Gestion des webhooks</x-nav-link>
                 </div>
             </div>
 
