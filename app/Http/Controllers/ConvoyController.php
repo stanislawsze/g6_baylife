@@ -9,8 +9,7 @@ class ConvoyController extends Controller
 {
     public function index()
     {
-        $convoys = Convoy::all();
-        return view('convoy.index', ['convoys' => $convoys]);
+        return view('convoy.index');
     }
 
     public function show(Convoy $convoy)
