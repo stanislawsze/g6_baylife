@@ -12,7 +12,7 @@ class GoingOnDuty extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'id', 'user_id', 'starts_at', 'stops_at', 'service_type', 'mission'
+        'id', 'user_id', 'starts_at', 'stops_at', 'service_type', 'mission', 'salary'
     ];
 
     protected $casts = [
@@ -22,6 +22,7 @@ class GoingOnDuty extends Model
         'stops_at' => 'datetime:Y-m-d H:i:s',
         'service_type' => 'integer',
         'mission' => 'string',
+        'salary' => 'integer'
     ];
 
     public function user(): BelongsTo
