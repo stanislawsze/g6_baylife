@@ -21,7 +21,7 @@ class DiscordUserRole extends Model
 
     public function roles()
     {
-        return $this->belongsTo(DiscordRole::class);
+        return $this->belongsTo(DiscordRole::class, 'discord_role_id', 'discord_id');
     }
 
     public function user()

@@ -78,4 +78,19 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Convoy::class);
     }
+
+    public function convoyCancellation()
+    {
+        return $this->hasMany(ConvoyUserCancellationReason::class);
+    }
+
+    public function getCurrentConvoyCancellation($id)
+    {
+        return $this->hasOne(ConvoyUserCancellationReason::class)->where([['user_id', $this->id], ['convoy_id', $id]])->first();
+    }
+
+    public function getRole()
+    {
+        return $this->hasMany(DiscordUserRole::class);
+    }
 }

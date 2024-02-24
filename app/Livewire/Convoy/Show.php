@@ -3,12 +3,16 @@
 namespace App\Livewire\Convoy;
 
 use App\Models\Convoy;
+use App\Models\ConvoyVehicle;
 use App\Models\Vehicle;
 use Livewire\Component;
 
 class Show extends Component
 {
     public Convoy $convoy;
+    public int $selectedUserId;
+
+    public int $vehicleId;
 
     public function render()
     {
@@ -33,7 +37,11 @@ class Show extends Component
         $convoy = Convoy::find($id);
         if ($convoy)
         {
-
+            ConvoyVehicle::create([
+                'vehicle_id' => $this->vehicleId,
+                'user_id' => $this->selectedUserId,
+                'convoy_id' => $id,
+            ]);
         }
     }
 }

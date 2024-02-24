@@ -3,8 +3,7 @@
 namespace App\Providers;
 
 use App\Events\UserWasCreated;
-use App\Listeners\GetDiscordGuildUsernameListener;
-use App\Listeners\GetDiscordGuildUserRolesListener;
+use App\Listeners\GetDiscordGuildUserListener;
 use App\Listeners\UserCreated;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Registered;
@@ -27,8 +26,7 @@ class EventServiceProvider extends ServiceProvider
             UserCreated::class
         ],
         Login::class => [
-            GetDiscordGuildUsernameListener::class,
-            GetDiscordGuildUserRolesListener::class,
+            GetDiscordGuildUserListener::class,
         ]
     ];
 

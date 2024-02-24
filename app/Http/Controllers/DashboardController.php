@@ -11,7 +11,7 @@ class DashboardController extends Controller
         $duties = auth()->user()->duties;
         $timeSecurity = 0;
         $timePatrol = 0;
-        foreach($duties as $d)
+        foreach($duties->whereNotNull('stops_at') as $d)
         {
             if($d->service_type == 0)
             {
