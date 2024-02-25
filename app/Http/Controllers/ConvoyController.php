@@ -12,6 +12,11 @@ class ConvoyController extends Controller
         return view('convoy.index');
     }
 
+    public function create()
+    {
+        return view('convoy.create');
+    }
+
     public function show(Convoy $convoy)
     {
         return view('convoy.show', ['convoy' => $convoy]);

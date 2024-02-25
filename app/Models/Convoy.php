@@ -33,6 +33,11 @@ class Convoy extends Model
         return $this->hasMany(ConvoyVehicle::class);
     }
 
+    public function userVehicle($userID)
+    {
+        return $this->hasOne(ConvoyVehicle::class)->where('user_id', $userID)->first();
+    }
+
     /**
      * @return HasMany
      */
@@ -49,6 +54,10 @@ class Convoy extends Model
         return $this->belongsToMany(User::class);
     }
 
+    public function config()
+    {
+        return $this->hasMany(ConvoyConfig::class)->orderBy('position');
+    }
     /**
      * @param $query
      * @param $column

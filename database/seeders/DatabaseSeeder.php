@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\DiscordRole;
+use App\Models\Vehicle;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,27 +14,30 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
-
-        $table = [
-            ['discord_id' => 869346585337790504, 'role_name' => 'PDG', 'role_color' => 'black'],
-            ['discord_id' => 871174336021684296, 'role_name' => 'Directeur', 'role_color' => '#ad1212'],
-            ['discord_id' => 1195799289247572028, 'role_name' => 'Directeur(trice) Adjoint(e)', 'role_color' => '#310027'],
-            ['discord_id' => 899712271389949962, 'role_name' => 'Responsable Générale', 'role_color' => '#71368A'],
-            ['discord_id' => 899712271389949962, 'role_name' => 'Chef·fe d\'équipe', 'role_color' => '#1400ff'],
-            ['discord_id' => 894675446514462720, 'role_name' => 'Agent Confirmé', 'role_color' => '#206694'],
-            ['discord_id' => 882003696714649630, 'role_name' => 'Agent', 'role_color' => '#70bfff'],
-            ['discord_id' => 889650698944405535, 'role_name' => 'Recrue', 'role_color' => 'white'],
-            ['discord_id' => 963856088552337460, 'role_name' => 'Recrue N.W.A', 'role_color' => '#E67E22'],
+        $tableVeh = [
+            ['name' => 'Stockade', 'plate' => 'G6 BRA', 'image' => 'stockade', 'in_use' => false, 'is_maintained' => false, 'is_refuel' => false, 'is_usable_for_convoy' => true],
+            ['name' => 'Stockade', 'plate' => 'G6 CHA', 'image' => 'stockade', 'in_use' => false, 'is_maintained' => false, 'is_refuel' => false, 'is_usable_for_convoy' => true],
+            ['name' => 'Stockade', 'plate' => 'G6 DEL', 'image' => 'stockade', 'in_use' => false, 'is_maintained' => false, 'is_refuel' => false, 'is_usable_for_convoy' => true],
+            ['name' => 'Stockade', 'plate' => 'G6 ECH', 'image' => 'stockade', 'in_use' => false, 'is_maintained' => false, 'is_refuel' => false, 'is_usable_for_convoy' => true],
+            ['name' => 'Stockade', 'plate' => 'G6 FOX', 'image' => 'stockade', 'in_use' => false, 'is_maintained' => false, 'is_refuel' => false, 'is_usable_for_convoy' => true],
+            ['name' => 'Stockade', 'plate' => 'G6 GOL', 'image' => 'stockade', 'in_use' => false, 'is_maintained' => false, 'is_refuel' => false, 'is_usable_for_convoy' => true],
+            ['name' => 'Stockade', 'plate' => 'G6 HOT', 'image' => 'stockade', 'in_use' => false, 'is_maintained' => false, 'is_refuel' => false, 'is_usable_for_convoy' => true],
+            ['name' => 'Stockade', 'plate' => 'G6 IND', 'image' => 'stockade', 'in_use' => false, 'is_maintained' => false, 'is_refuel' => false, 'is_usable_for_convoy' => true],
+            ['name' => 'Stockade', 'plate' => 'G6 JUL', 'image' => 'stockade', 'in_use' => false, 'is_maintained' => false, 'is_refuel' => false, 'is_usable_for_convoy' => true],
+            ['name' => 'Stockade', 'plate' => 'G6 KIL', 'image' => 'stockade', 'in_use' => false, 'is_maintained' => false, 'is_refuel' => false, 'is_usable_for_convoy' => true],
+            ['name' => 'Nightshark', 'plate' => 'R6 ALP', 'image' => 'nightshark', 'in_use' => false, 'is_maintained' => false, 'is_refuel' => false, 'is_usable_for_convoy' => true],
+            ['name' => 'Nightshark', 'plate' => 'R6 BRA', 'image' => 'nightshark', 'in_use' => false, 'is_maintained' => false, 'is_refuel' => false, 'is_usable_for_convoy' => true],
+            ['name' => 'Nightshark', 'plate' => 'R6 CHA', 'image' => 'nightshark', 'in_use' => false, 'is_maintained' => false, 'is_refuel' => false, 'is_usable_for_convoy' => true],
+            ['name' => 'Nightshark', 'plate' => 'VGS 539', 'image' => 'nightshark', 'in_use' => false, 'is_maintained' => false, 'is_refuel' => false, 'is_usable_for_convoy' => true],
+            ['name' => 'Moto Police', 'plate' => 'AUB 559', 'image' => 'u2r', 'in_use' => false, 'is_maintained' => false, 'is_refuel' => false, 'is_usable_for_convoy' => true],
+            ['name' => 'Moto Police', 'plate' => 'BSB 198', 'image' => 'u2r', 'in_use' => false, 'is_maintained' => false, 'is_refuel' => false, 'is_usable_for_convoy' => true],
+            ['name' => 'Moto Police', 'plate' => 'EKQ 323', 'image' => 'u2r', 'in_use' => false, 'is_maintained' => false, 'is_refuel' => false, 'is_usable_for_convoy' => true],
+            ['name' => 'Moto Police', 'plate' => 'OUU 454', 'image' => 'u2r', 'in_use' => false, 'is_maintained' => false, 'is_refuel' => false, 'is_usable_for_convoy' => true],
+            ['name' => 'Moto Police', 'plate' => 'RIW 719', 'image' => 'u2r', 'in_use' => false, 'is_maintained' => false, 'is_refuel' => false, 'is_usable_for_convoy' => true],
         ];
-        foreach($table as $t)
+        foreach($tableVeh as $t)
         {
-            DiscordRole::create($t);
+            Vehicle::create($t);
         }
     }
 }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0c629d2f68588f5f92bfdab87d4f8642",
+    "content-hash": "564652667ecb9ea76aedbe1c011003c1",
     "packages": [
         {
             "name": "brick/math",
@@ -3374,6 +3374,60 @@
                 }
             ],
             "time": "2023-11-08T05:53:05+00:00"
+        },
+        {
+            "name": "redot/laravel-toastify",
+            "version": "v1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/redot-src/laravel-toastify.git",
+                "reference": "a9e6e2cb5871908ab480a1e3cecdec4ed6d5e6ea"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/redot-src/laravel-toastify/zipball/a9e6e2cb5871908ab480a1e3cecdec4ed6d5e6ea",
+                "reference": "a9e6e2cb5871908ab480a1e3cecdec4ed6d5e6ea",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^10.0",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.10"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Redot\\LaravelToastify\\LaravelToastifyServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "Redot\\LaravelToastify\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Abdelrhman Said",
+                    "email": "abdelrhmansaidzaki@hotmail.com"
+                }
+            ],
+            "description": "A simple package to use toastify.js in laravel applications",
+            "support": {
+                "issues": "https://github.com/redot-src/laravel-toastify/issues",
+                "source": "https://github.com/redot-src/laravel-toastify/tree/v1.0.2"
+            },
+            "time": "2023-09-13T21:40:27+00:00"
         },
         {
             "name": "symfony/console",

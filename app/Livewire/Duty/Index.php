@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Duty;
 
 use App\Models\GoingOnDuty;
 use App\Traits\DiscordWebhookTrait;
 use Livewire\Component;
 
-class PriseDeService extends Component
+class Index extends Component
 {
     use DiscordWebhookTrait;
 
@@ -24,18 +24,20 @@ class PriseDeService extends Component
         $this->isRunning = !$this->isRunning;
 
         if ($this->isRunning) {
+            $serviceType = $this->serviceType ? 1 : 0;
+
             $this->startTime = now();
             $this->endTime = null;
             $this->dispatch('startTimerInterval');
             GoingOnDuty::create([
                 'user_id' => auth()->id(),
                 'starts_at' => now(),
-                'service_type' => $this->serviceType,
+                'service_type' => $serviceType,
                 'mission' => $this->mission,
             ]);
             $this->sendDiscordWebhookDuty('https://discord.com/api/webhooks/1207108956204306564/2lvn5QIJh_VwE55AIGOZGtpFtm7PEp7nVlspAFNPWWoc6i-1Ifg7w4sfnTf7vi0EiZw3', auth()->user(), 'pris son service', null, $this->serviceType);
         } else {
-            $lastDuty = GoingOnDuty::updateOrCreate([
+            GoingOnDuty::updateOrCreate([
                 'user_id' => auth()->id(),
                 'starts_at' => $this->startTime,
                 'stops_at' => null,
@@ -61,7 +63,7 @@ class PriseDeService extends Component
             $this->refreshTimer();
         }
         $otherDuties = GoingOnDuty::whereNull('stops_at')->get();
-        return view('livewire.prise-de-service')->with([
+        return view('livewire.duty.index')->with([
             'duties' => $duties,
             'otherDuties' => $otherDuties,
         ]);
