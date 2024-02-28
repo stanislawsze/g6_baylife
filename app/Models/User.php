@@ -89,8 +89,34 @@ class User extends Authenticatable
         return $this->hasOne(ConvoyUserCancellationReason::class)->where([['user_id', $this->id], ['convoy_id', $id]])->first();
     }
 
-    public function getRole()
+    /**
+     * @return HasMany
+     */
+    public function getRole(): HasMany
     {
         return $this->hasMany(DiscordUserRole::class);
+    }
+
+    public function salary($convoyId)
+    {
+        return (int) SalaryEarned::where([['convoy_id', $convoyId], ['user_id', $this->id]])->sum('salary');
+    }
+
+    /**
+     * @return int
+     */
+    public function salaries(): int
+    {
+        return (int) SalaryEarned::where('user_id', $this->id)->sum('salary');
+    }
+
+    public function convoySalaries(): int
+    {
+        return (int) SalaryEarned::where('user_id', $this->id)->whereNotNull('convoy_id')->sum('salary');
+    }
+
+    public function dutySalary(): int
+    {
+        return (int) SalaryEarned::where('user_id', $this->id)->whereNotNull('going_on_duty_id')->sum('salary');
     }
 }

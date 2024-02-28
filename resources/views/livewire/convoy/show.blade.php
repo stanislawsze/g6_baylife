@@ -1,4 +1,4 @@
-<div wire:poll>
+<div >
     <div class="rounded-3xl p-4 bg-white dark:bg-gray-800 my-2">
         <div class="grid grid-cols-2 gap-4">
             <div>
@@ -95,7 +95,7 @@
                                 @endif
                             </td>
                             <td class="text-sm text-gray-900 dark:text-gray-200 font-light px-6 py-4 whitespace-nowrap">
-                                ${{number_format(($convoy->convoy_amount/2)/$convoy->users->count(), 2, ',', ' ')}}
+                                <input type="number" wire:model.blur="userSalary['{{$user->id}}']" class="w-full rounded-md focus:ring focus:ri focus:ri dark:border-gray-700 dark:text-gray-900">
                             </td>
                         </tr>
                     @endforeach
