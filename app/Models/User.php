@@ -3,7 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Jakyeru\Larascord\Traits\InteractsWithDiscord;
@@ -69,22 +72,44 @@ class User extends Authenticatable
         'roles' => 'json',
     ];
 
+    /**
+     * @return HasMany
+     */
     public function duties(): HasMany
     {
         return $this->hasMany(GoingOnDuty::class);
     }
 
-    public function convoys()
+    /**
+     * @return BelongsToMany
+     */
+    public function convoys(): BelongsToMany
     {
         return $this->belongsToMany(Convoy::class);
     }
 
-    public function convoyCancellation()
+    /**
+     * @param $id
+     * @return bool
+     */
+    public function hasEntryInConvoyTable($id): bool
+    {
+        return $this->convoys()->where('convoy_id', $id)->exists();
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function convoyCancellation(): HasMany
     {
         return $this->hasMany(ConvoyUserCancellationReason::class);
     }
 
-    public function getCurrentConvoyCancellation($id)
+    /**
+     * @param $id
+     * @return Model|HasOne|null
+     */
+    public function getCurrentConvoyCancellation($id): \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Relations\HasOne|null
     {
         return $this->hasOne(ConvoyUserCancellationReason::class)->where([['user_id', $this->id], ['convoy_id', $id]])->first();
     }
@@ -97,7 +122,11 @@ class User extends Authenticatable
         return $this->hasMany(DiscordUserRole::class);
     }
 
-    public function salary($convoyId)
+    /**
+     * @param $convoyId
+     * @return int
+     */
+    public function salary($convoyId): int
     {
         return (int) SalaryEarned::where([['convoy_id', $convoyId], ['user_id', $this->id]])->sum('salary');
     }
@@ -110,13 +139,28 @@ class User extends Authenticatable
         return (int) SalaryEarned::where('user_id', $this->id)->sum('salary');
     }
 
+    /**
+     * @return int
+     */
     public function convoySalaries(): int
     {
         return (int) SalaryEarned::where('user_id', $this->id)->whereNotNull('convoy_id')->sum('salary');
     }
 
+    /**
+     * @return int
+     */
     public function dutySalary(): int
     {
         return (int) SalaryEarned::where('user_id', $this->id)->whereNotNull('going_on_duty_id')->sum('salary');
+    }
+
+    /**
+     * @param $convoyId
+     * @return void
+     */
+    public function addEntryToConvoyTable($convoyId): void
+    {
+        $this->convoys()->attach($convoyId);
     }
 }

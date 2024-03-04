@@ -217,6 +217,12 @@ class Show extends Component
         $delete->delete();
     }
 
+    public function joinConvoy($id)
+    {
+        auth()->user()->addEntryToConvoyTable($id);
+        toastify()->success('Vous avez rejoins le convoi !');
+        return redirect(route('convoy.show', ['convoy' => $this->convoy]));
+    }
     public function updateUserSalary($value, $key)
     {
         dd($key, $value);
