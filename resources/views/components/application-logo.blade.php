@@ -1,1 +1,1 @@
-<img src="https://cdn.discordapp.com/icons/869345535318958110/846c9858c39ef37d6d636d50438f6d2a.webp?size=96" {{ $attributes }}>
+<img src="https://cdn.discordapp.com/icons/869345535318958110/4f7e094392b6b787f19866a6633b0bf4.webp?size=160" {{ $attributes }}>
