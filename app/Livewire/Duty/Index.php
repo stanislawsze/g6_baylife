@@ -3,6 +3,7 @@
 namespace App\Livewire\Duty;
 
 use App\Models\GoingOnDuty;
+use App\Models\Vehicle;
 use App\Traits\DiscordWebhookTrait;
 use Livewire\Component;
 
@@ -16,6 +17,7 @@ class Index extends Component
     public $duration;
     public $serviceType;
     public $mission;
+    public $vehicleTaken;
 
     protected $listeners = ['refreshTimer'];
 
@@ -34,16 +36,23 @@ class Index extends Component
                 'starts_at' => now(),
                 'service_type' => $serviceType,
                 'mission' => $this->mission,
+                'vehicle_id' => $this->vehicleTaken
             ]);
+            $vehicle = Vehicle::find($this->vehicleTaken);
+            $vehicle->in_use = true;
+            $vehicle->save();
             $this->sendDiscordWebhookDuty('https://discord.com/api/webhooks/1207108956204306564/2lvn5QIJh_VwE55AIGOZGtpFtm7PEp7nVlspAFNPWWoc6i-1Ifg7w4sfnTf7vi0EiZw3', auth()->user(), 'pris son service', null, $this->serviceType);
         } else {
-            GoingOnDuty::updateOrCreate([
+            $currentDuty = GoingOnDuty::updateOrCreate([
                 'user_id' => auth()->id(),
                 'starts_at' => $this->startTime,
                 'stops_at' => null,
             ],[
                 'stops_at' => now()
             ]);
+            $vehicle = Vehicle::find($currentDuty->vehicle_id);
+            $vehicle->in_use = true;
+            $vehicle->save();
             $this->endTime = now();
             $this->sendDiscordWebhookDuty('https://discord.com/api/webhooks/1207108956204306564/2lvn5QIJh_VwE55AIGOZGtpFtm7PEp7nVlspAFNPWWoc6i-1Ifg7w4sfnTf7vi0EiZw3', auth()->user(), 'mis fin à son service', $this->duration, $this->serviceType);
             $this->dispatch('stopTimerInterval');
@@ -62,10 +71,12 @@ class Index extends Component
             $this->serviceType = $currentDuty->service_type;
             $this->refreshTimer();
         }
+        $availableVehicles = Vehicle::where('in_use', false)->get();
         $otherDuties = GoingOnDuty::whereNull('stops_at')->get();
         return view('livewire.duty.index')->with([
             'duties' => $duties,
             'otherDuties' => $otherDuties,
+            'vehicles' => $availableVehicles
         ]);
     }
 
