@@ -13,7 +13,6 @@
             <div>
                 <button {{$convoy->is_finished ? 'disabled' : ''}} wire:click="startStopConvoy({{$convoy->id}})" class="{{$convoy->is_finished ? 'bg-red-400' : 'bg-green-500'}} {{$convoy->is_started && !$convoy->is_finished ?? 'bg-red-500'}} rounded border p-1">{{$convoy->is_started ? 'Mettre fin au convoi' : 'Lancer le convoi'}}</button>
                 <button wire:click="addVehicleToConvoy({{$convoy->id}})">Ajouter un véhicule</button>
-                {{auth()->user()->hasEntryInConvoyTable($convoy->id) ? 'Ok' : 'PAS OK'}}
             </div>
             <div>
                 <button {{auth()->user()->hasEntryInConvoyTable($convoy->id) ? 'disabled' : ''}} wire:click="joinConvoy({{$convoy->id}})"
