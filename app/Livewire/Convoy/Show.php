@@ -6,7 +6,9 @@ use App\Models\Convoy;
 use App\Models\ConvoyConfig;
 use App\Models\ConvoyVehicle;
 use App\Models\SalaryEarned;
+use App\Models\User;
 use App\Models\Vehicle;
+use GuzzleHttp\Client;
 use Livewire\Component;
 
 class Show extends Component
@@ -222,6 +224,35 @@ class Show extends Component
         auth()->user()->addEntryToConvoyTable($id);
         toastify()->success('Vous avez rejoins le convoi !');
         return redirect(route('convoy.show', ['convoy' => $this->convoy]));
+    }
+    public function getAgentOnConvoy()
+    {
+        $channelId = 1181220799068258355;
+        $emoji = "✅";
+        $httpClient = new Client([
+            'base_uri' => 'https://discord.com/api/v9/',
+            'headers' => [
+                'Authorization' => 'Bot ' . config('larascord.token'),
+            ],
+        ]);
+
+        $response = $httpClient->get("channels/{$channelId}/messages/{$this->convoy->discord_message_id}/reactions/{$emoji}");
+
+        if ($response->getStatusCode() === 200) {
+            foreach(json_decode($response->getBody()) as $user)
+            {
+                $userDB = User::find($user->id);
+                if(!$userDB)
+                {
+                    continue;
+                } else {
+                    $userDB->convoys()->syncWithoutDetaching([$this->convoy->id]);
+                }
+
+            }
+            toastify()->success('Liste des agents mise à jour');
+            return redirect(route('convoy.show', ['convoy' => $this->convoy]));
+        }
     }
     public function updateUserSalary($value, $key)
     {

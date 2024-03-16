@@ -2,7 +2,10 @@
 
 namespace App\Livewire\Duty;
 
+use App\Models\DiscordUserRole;
 use App\Models\GoingOnDuty;
+use App\Models\Salary;
+use App\Models\SalaryEarned;
 use App\Models\Vehicle;
 use App\Traits\DiscordWebhookTrait;
 use Livewire\Component;
@@ -48,12 +51,18 @@ class Index extends Component
                 'starts_at' => $this->startTime,
                 'stops_at' => null,
             ],[
-                'stops_at' => now()
+                'stops_at' => now(),
+                'salary' => $this->calculateSalary(now()->diffInSeconds($this->startTime))
             ]);
             $vehicle = Vehicle::find($currentDuty->vehicle_id);
-            $vehicle->in_use = true;
+            $vehicle->in_use = false;
             $vehicle->save();
             $this->endTime = now();
+            SalaryEarned::create([
+                'user_id' => auth()->user()->id,
+                'going_on_duty_id' => $currentDuty->id,
+                'salary' => $this->calculateSalary($this->endTime->diffInSeconds($this->startTime))
+            ]);
             $this->sendDiscordWebhookDuty('https://discord.com/api/webhooks/1207108956204306564/2lvn5QIJh_VwE55AIGOZGtpFtm7PEp7nVlspAFNPWWoc6i-1Ifg7w4sfnTf7vi0EiZw3', auth()->user(), 'mis fin à son service', $this->duration, $this->serviceType);
             $this->dispatch('stopTimerInterval');
         }
@@ -114,5 +123,13 @@ class Index extends Component
             return gmdate("H:i:s", $endTime->diffInSeconds($this->startTime));
         }
         return '00:00:00';
+    }
+
+    private function calculateSalary($time)
+    {
+        $roles = DiscordUserRole::where('user_id', auth()->user()->id)->get('discord_role_id')->toArray();
+        $salary = Salary::whereIn('discord_role_id', $roles)->first();
+        $salaryPerSecond = round($salary->salary/3600, 2, PHP_ROUND_HALF_UP);
+        return $salaryPerSecond*$time;
     }
 }

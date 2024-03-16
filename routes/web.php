@@ -21,7 +21,7 @@ Route::get('/', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::get('/roles', [DiscordRoleHandlerController::class, 'index'])->name('roles');
+    Route::resource('/roles', DiscordRoleHandlerController::class);
     Route::get('/getDiscordRoles', [DiscordRoleHandlerController::class, 'getDiscordRoles']);
     Route::get('/webhook', [DiscordRoleHandlerController::class, 'webhook'])->name('webhook');
     Route::get('/timer', [DiscordRoleHandlerController::class, 'timer'])->name('timer');

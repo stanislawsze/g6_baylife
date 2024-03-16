@@ -12,7 +12,7 @@ class Convoy extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id', 'name', 'is_started', 'is_finished', 'user_id', 'convoy_amount', 'start_at'
+        'id', 'name', 'is_started', 'is_finished', 'user_id', 'convoy_amount', 'start_at', 'discord_message_id'
     ];
 
     protected $casts = [
@@ -22,7 +22,8 @@ class Convoy extends Model
         'is_finished' => 'boolean',
         'user_id' => 'integer',
         'convoy_amount' => 'integer',
-        'start_at' => 'datetime:Y-m-d H:i'
+        'start_at' => 'datetime:Y-m-d H:i',
+        'discord_message_id' => 'string'
     ];
 
     /**

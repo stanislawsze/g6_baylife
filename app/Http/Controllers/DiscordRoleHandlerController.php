@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Convoy;
 use App\Models\DiscordRole;
+use App\Models\DiscordUserRole;
+use App\Models\Salary;
+use App\Models\User;
 use App\Traits\DiscordWebhookTrait;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -31,13 +36,13 @@ class DiscordRoleHandlerController extends Controller
         $this->tokenData['scope'] = config('larascord.scopes');
     }
     public function index(){
-        return view('discord.roles', ['roles' => DiscordRole::all()]);
+        return view('discord.roles');
     }
 
     public function getDiscordRoles()
     {
         $guildId = 869345535318958110;
-        $discordToken = 'MTIwNzA0NTgyMzg2MzQ1OTkwMA.GI-g6s._YAALrCJVGG2iajCJhFjzSsGcNgMg0OLSFGWCA';
+        $discordToken = config('larascord.token');
         $response = Http::withHeaders([
             'Authorization' => 'Bot ' . $discordToken,
         ])->get("https://discord.com/api/guilds/{$guildId}/roles");
@@ -59,18 +64,9 @@ class DiscordRoleHandlerController extends Controller
     }
     public function webhook()
     {
-        $action = "a récupéré la liste des rôles";
-        $webhookUrl = 'https://discord.com/api/webhooks/1207108956204306564/2lvn5QIJh_VwE55AIGOZGtpFtm7PEp7nVlspAFNPWWoc6i-1Ifg7w4sfnTf7vi0EiZw3';
-        try{
-            $response = $this->sendDiscordWebhook($webhookUrl, auth()->user(), $action);
-            return response()->json(['success' => true, 'response' => $response]);
-        } catch (\Exception $e) {
-            return response()->json(['success' => false, 'error' => $e->getMessage()]);
-        }
-
-
-
-        return $response->body();
+        $roles = DiscordUserRole::where('user_id', auth()->user()->id)->get('discord_role_id')->toArray();
+        $salary = Salary::whereIn('discord_role_id', $roles)->first();
+        dd($roles,$salary);
     }
 
     public function timer()

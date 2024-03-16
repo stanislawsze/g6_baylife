@@ -51,11 +51,11 @@
             images: [
                 {
                     link:"{{asset('img/direction/rudy.png')}}",
-                    quote:"Coucou moi c'est Rudydy",
+                    quote:"J'arrive après / Je vais manger",
                 },
                 {
                     link:"{{asset('img/direction/johan.png')}}",
-                    quote:"Coucou moi c'est Johan lanounouille",
+                    quote:"Mais j'en sais rien je suis pas au courant",
                 },
                 {
                     link:"{{asset('img/direction/bill.png')}}",

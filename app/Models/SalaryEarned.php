@@ -12,7 +12,7 @@ class SalaryEarned extends Model
     use HasFactory;
 
     protected $fillable = [
-        'salary', 'convoy_id', 'user_id', 'id', 'duty_id'
+        'salary', 'convoy_id', 'user_id', 'id', 'going_on_duty_id'
     ];
 
     protected $casts = [
@@ -20,7 +20,7 @@ class SalaryEarned extends Model
         'convoy_id' => 'integer',
         'user_id' => 'integer',
         'salary' => 'integer',
-        'duty_id' => 'integer',
+        'going_on_duty_id' => 'integer',
     ];
 
     public function duty()
