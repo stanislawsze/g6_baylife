@@ -73,4 +73,9 @@ class DiscordRoleHandlerController extends Controller
     {
         return view('timer.test');
     }
+
+    public function edit(DiscordRole $role)
+    {
+        return view('discord.edit', ['discord_role' => $role]);
+    }
 }

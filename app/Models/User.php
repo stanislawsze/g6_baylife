@@ -155,6 +155,11 @@ class User extends Authenticatable
         return (int) SalaryEarned::where('user_id', $this->id)->whereNotNull('going_on_duty_id')->sum('salary');
     }
 
+    public function dutyPatrolSalary(): int
+    {
+        return (int) SalaryEarned::where('user_id', $this->id)->whereIn('going_on_duty_id', $this->duties()->where('service_type', false)->get('id')->toArray())->sum('salary');
+    }
+
     /**
      * @param $convoyId
      * @return void

@@ -23,6 +23,11 @@ class Index extends Component
         return redirect(route('roles.index'));
     }
 
+    public function edit($id)
+    {
+        return redirect(route('roles.edit', ['role' => DiscordRole::find($id)]));
+    }
+
     public function getDiscordRoles()
     {
         $guildId = 869345535318958110;
