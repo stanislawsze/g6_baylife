@@ -8,24 +8,29 @@ use App\Models\Salary;
 use App\Models\SalaryEarned;
 use App\Models\Vehicle;
 use App\Traits\DiscordWebhookTrait;
+use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
 class Index extends Component
 {
     use DiscordWebhookTrait;
 
-    public $isRunning = false;
+    public bool $isRunning = false;
     public $startTime;
     public $endTime;
     public $duration;
-    public $serviceType;
-    public $mission;
-    public $vehicleTaken;
+    public bool $serviceType = false;
+    public string $mission;
+    public int $vehicleTaken;
 
     protected $listeners = ['refreshTimer'];
 
-    public function startStopTimer()
+    public function startStopTimer(): void
     {
+        $this->validate([
+            'vehicleTaken' => 'required:integer',
+            'mission' => 'required|min:2'
+        ]);
         $this->isRunning = !$this->isRunning;
 
         if ($this->isRunning) {
@@ -44,7 +49,7 @@ class Index extends Component
             $vehicle = Vehicle::find($this->vehicleTaken);
             $vehicle->in_use = true;
             $vehicle->save();
-            $this->sendDiscordWebhookDuty('https://discord.com/api/webhooks/1207108956204306564/2lvn5QIJh_VwE55AIGOZGtpFtm7PEp7nVlspAFNPWWoc6i-1Ifg7w4sfnTf7vi0EiZw3', auth()->user(), 'pris son service', null, $this->serviceType);
+            $message = 'pris son service';
         } else {
             $currentDuty = GoingOnDuty::updateOrCreate([
                 'user_id' => auth()->id(),
@@ -63,12 +68,14 @@ class Index extends Component
                 'going_on_duty_id' => $currentDuty->id,
                 'salary' => $this->calculateSalary($this->endTime->diffInSeconds($this->startTime))
             ]);
-            $this->sendDiscordWebhookDuty('https://discord.com/api/webhooks/1207108956204306564/2lvn5QIJh_VwE55AIGOZGtpFtm7PEp7nVlspAFNPWWoc6i-1Ifg7w4sfnTf7vi0EiZw3', auth()->user(), 'mis fin à son service', $this->duration, $this->serviceType);
+            $message = 'mis fin à son service';
             $this->dispatch('stopTimerInterval');
         }
+        $webhook = 'https://discord.com/api/webhooks/1207108956204306564/2lvn5QIJh_VwE55AIGOZGtpFtm7PEp7nVlspAFNPWWoc6i-1Ifg7w4sfnTf7vi0EiZw3';
+        $this->sendWebhook($webhook, $message, $this->duration);
     }
 
-    public function render()
+    public function render(): View
     {
         $this->calculateDuration();
         $duties = auth()->user()->duties;
@@ -89,13 +96,13 @@ class Index extends Component
         ]);
     }
 
-    public function refreshTimer()
+    public function refreshTimer(): void
     {
         $this->duration = $this->calculateDuration();
         $this->dispatch('timerUpdated', $this->duration);
     }
 
-    public function joinDuty($id)
+    public function joinDuty($id): void
     {
         $dutyToJoin = GoingOnDuty::find($id);
         if($dutyToJoin)
@@ -110,13 +117,16 @@ class Index extends Component
                 'starts_at' => now(),
                 'service_type' => $this->serviceType,
                 'mission' => $this->mission,
+                'vehicle_id' => $dutyToJoin->vehicle_id
             ]);
-            $this->sendDiscordWebhookDuty('https://discord.com/api/webhooks/1207108956204306564/2lvn5QIJh_VwE55AIGOZGtpFtm7PEp7nVlspAFNPWWoc6i-1Ifg7w4sfnTf7vi0EiZw3', auth()->user(), 'pris son service', null, $this->serviceType);
+            $webhook = 'https://discord.com/api/webhooks/1207108956204306564/2lvn5QIJh_VwE55AIGOZGtpFtm7PEp7nVlspAFNPWWoc6i-1Ifg7w4sfnTf7vi0EiZw3';
+
+            $this->sendWebhook($webhook, 'pris son service', null);
             $this->refreshTimer();
         }
 
     }
-    private function calculateDuration()
+    private function calculateDuration(): string
     {
         if ($this->startTime) {
             $endTime = $this->endTime ?: now();
@@ -125,11 +135,27 @@ class Index extends Component
         return '00:00:00';
     }
 
-    private function calculateSalary($time)
+    private function calculateSalary($time): float|int
     {
         $roles = DiscordUserRole::where('user_id', auth()->user()->id)->get('discord_role_id')->toArray();
         $salary = Salary::whereIn('discord_role_id', $roles)->first();
-        $salaryPerSecond = round($salary->salary/3600, 2, PHP_ROUND_HALF_UP);
+        if($this->missionType)
+        {
+            $salaryToEarn = $salary->salary_mission;
+        } else {
+            $salaryToEarn = $salary->salary_patrol;
+        }
+        $salaryPerSecond = round($salaryToEarn/3600, 2, PHP_ROUND_HALF_UP);
         return $salaryPerSecond*$time;
+    }
+
+    private function sendWebhook($webhook, $message, ?string $duration = '00:00:00'): void
+    {
+        try{
+            $this->sendDiscordWebhookDuty($webhook, auth()->user(), $message, $duration, $this->serviceType);
+        } catch( \Exception $e)
+        {
+            \Log::debug($e);
+        }
     }
 }

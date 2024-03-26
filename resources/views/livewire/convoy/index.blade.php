@@ -1,4 +1,5 @@
 <div class="dark:bg-gray-800 p-4 rounded">
+    @can('manage', \App\Models\Convoy::class)
     <div class="flex justify-between">
         <div class="flex">
             <select wire:model.change="column" class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
@@ -47,6 +48,7 @@
             </div>
         </div>
     @endif
+    @endcan
     <table class="min-w-full">
         <thead class="bg-white dark:bg-gray-800 border-b">
         <tr>

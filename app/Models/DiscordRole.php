@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class DiscordRole extends Model
 {
@@ -22,4 +23,17 @@ class DiscordRole extends Model
         'role_name' => 'string',
         'role_color' => 'string'
     ];
+
+    protected $with = [
+        'permission'
+    ];
+    public function permission(): HasOne
+    {
+        return $this->hasOne(RolePermission::class, 'discord_role_id', 'discord_id');
+    }
+
+    public function salary(): HasOne
+    {
+        return $this->hasOne(Salary::class, 'discord_role_id', 'discord_id');
+    }
 }

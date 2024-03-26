@@ -4,7 +4,7 @@ namespace App\Policies;
 
 use App\Models\User;
 
-class ConvoyPolicy
+class DiscordRolePolicy
 {
     public function before(User $user, string $ability) : bool|null
     {
@@ -16,7 +16,7 @@ class ConvoyPolicy
 
     public function manage(User $user): bool|null
     {
-        if($user->getRole->roles->permission->hasConvoyPermission())
+        if($user->getRole->roles->permission->hasRolePermission())
         {
             return true;
         }

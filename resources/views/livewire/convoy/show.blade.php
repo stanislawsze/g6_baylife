@@ -1,6 +1,7 @@
 <div >
     <div class="rounded-3xl p-4 bg-white dark:bg-gray-800 my-2">
         <div class="grid grid-cols-2 gap-4">
+            @can('manage', \App\Models\Convoy::class)
             <div>
                 <li>Nom du client : {{$convoy->name}}</li>
             </div>
@@ -14,6 +15,7 @@
                 <button wire:click="getAgentOnConvoy" class="bg-g6 text-white p-1 rounded">Mettre à jour la liste des agents</button>
                 <button {{$convoy->is_finished ? 'disabled' : ''}} wire:click="startStopConvoy({{$convoy->id}})" class="{{$convoy->is_finished ? 'bg-red-400' : 'bg-green-500'}} {{$convoy->is_started && !$convoy->is_finished ?? 'bg-red-500'}} rounded border p-1">{{$convoy->is_started ? 'Mettre fin au convoi' : 'Lancer le convoi'}}</button>
             </div>
+            @endcan
             <div>
                 @if(auth()->user()->hasEntryInConvoyTable($convoy->id))
                 <x-secondary-button disabled wire:click="joinConvoy({{$convoy->id}})">
@@ -44,7 +46,9 @@
                                         <div>
                                             {{$u->user->global_name}}
                                         </div>
+                                        @can('manage', \App\Models\Convoy::class)
                                         <button wire:click="deleteFromVeh({{$u->id}})" class="w-full text-sm bg-red-600 text-white justify-end">Retirer du véhicule</button>
+                                        @endcan
                                     </div>
                                     @endforeach
                             </div>
@@ -65,9 +69,11 @@
                         <th scope="col" class="text-sm font-medium text-gray-900 dark:text-gray-200 px-6 py-4 text-left">
                             Véhicule
                         </th>
+                        @can('manage', \App\Models\Convoy::class)
                         <th scope="col" class="text-sm font-medium text-gray-900 dark:text-gray-200 px-6 py-4 text-left">
                             Montant prime
                         </th>
+                        @endcan
                     </tr>
                     </thead>
                     <tbody>
@@ -105,7 +111,9 @@
                                 @endif
                             </td>
                             <td class="text-sm text-gray-900 dark:text-gray-200 font-light px-6 py-4 whitespace-nowrap">
+                                @can('manage', \App\Models\Convoy::class)
                                 <x-text-input wire:model.blur="userSalary['{{$user->id}}']"></x-text-input>
+                                @endcan
                             </td>
                         </tr>
                     @endforeach
@@ -113,6 +121,7 @@
                 </table>
             </div>
         </div>
+        @can('manage', \App\Models\Convoy::class)
         <div class="w-1/3">
             <div class="rounded-3xl p-4 bg-white dark:bg-gray-800 my-2 fixed">
                 <div class="col-span-full sm:col-span-3 my-2">
@@ -142,6 +151,7 @@
                 <x-secondary-button wire:click="update({{$convoy->id}})">Mettre à jour le convoi</x-secondary-button>
             </div>
         </div>
+        @endcan
     </div>
 
 </div>

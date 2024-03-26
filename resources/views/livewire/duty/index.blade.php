@@ -19,18 +19,22 @@
                     <span class="px-4 py-2 bg-g6-2 peer-checked:bg-g6-3 rounded-3xl text-white">Patrouille</span>
                     <span class="px-4 py-2 bg-g6-3 peer-checked:bg-g6-2 rounded-3xl text-white">Mission de sécurité</span>
                 </label>
+                <x-input-error :messages="$errors->get('serviceType')" class="mt-2" />
             </div>
             <div>
                 <x-input-label for="mission">Mission</x-input-label>
                 <x-text-input id="mission" wire:model="mission" placeholder="Nom de la mission"></x-text-input>
+                <x-input-error :messages="$errors->get('mission')" class="mt-2" />
             </div>
             <div>
                 <label for="vehicles">Choix du véhicule</label>
                 <select id="vehicles" wire:model.change="vehicleTaken" class="block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
+                    <option value="">Sélectionner un véhicule</option>
                     @foreach($vehicles as $v)
                         <option value="{{$v->id}}">{{$v->name}} ({{$v->plate}})</option>
                     @endforeach
                 </select>
+                <x-input-error :messages="$errors->get('vehicleTaken')" class="mt-2" />
             </div>
         </div>
         <div class="w-full flex justify-center">

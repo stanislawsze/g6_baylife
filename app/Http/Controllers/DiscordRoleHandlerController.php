@@ -36,11 +36,13 @@ class DiscordRoleHandlerController extends Controller
         $this->tokenData['scope'] = config('larascord.scopes');
     }
     public function index(){
+        $this->authorize('manage', DiscordRole::class);
         return view('discord.roles');
     }
 
     public function getDiscordRoles()
     {
+        $this->authorize('manage', DiscordRole::class);
         $guildId = 869345535318958110;
         $discordToken = config('larascord.token');
         $response = Http::withHeaders([
@@ -64,6 +66,7 @@ class DiscordRoleHandlerController extends Controller
     }
     public function webhook()
     {
+        $this->authorize('manage', DiscordRole::class);
         $roles = DiscordUserRole::where('user_id', auth()->user()->id)->get('discord_role_id')->toArray();
         $salary = Salary::whereIn('discord_role_id', $roles)->first();
         dd($roles,$salary);
@@ -76,6 +79,7 @@ class DiscordRoleHandlerController extends Controller
 
     public function edit(DiscordRole $role)
     {
+        $this->authorize('manage', DiscordRole::class);
         return view('discord.edit', ['discord_role' => $role]);
     }
 }

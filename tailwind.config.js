@@ -12,9 +12,9 @@ export default {
     theme: {
         extend: {
             colors: {
-                'g6': '#6D855F',
-                'g6-2': '#1F3B28',
-                'g6-3': '#475B2A',
+                'g6': '#446c00',
+                'g6-2': '#446c00',
+                'g6-3': '#446c00',
             },
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],

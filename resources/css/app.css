@@ -8,3 +8,29 @@
     @apply visible z-50;
 }
 @tailwind utilities;
+.loader-wrapper {
+    display: block;
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(17, 24, 39, 1); /* Opacité de fond */
+    opacity: 1; /* Commencez avec une opacité à 0 pour le fondu */
+    transition: opacity 0.5s ease; /* Transition d'opacité pour l'effet de fondu */
+}
+
+/* HTML: <div class="loader"></div> */
+.loader {
+    position: relative;
+    margin: auto auto;
+    top: 50%;
+    width: 50px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 8px solid;
+    border-color: #3f578d #3f578d17;
+    animation: l1 1s infinite;
+}
+@keyframes l1 {to{transform: rotate(.5turn)}}

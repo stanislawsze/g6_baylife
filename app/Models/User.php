@@ -115,11 +115,11 @@ class User extends Authenticatable
     }
 
     /**
-     * @return HasMany
+     * @return HasOne
      */
-    public function getRole(): HasMany
+    public function getRole(): HasOne
     {
-        return $this->hasMany(DiscordUserRole::class);
+        return $this->hasOne(DiscordUserRole::class);
     }
 
     /**

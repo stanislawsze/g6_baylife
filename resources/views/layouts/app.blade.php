@@ -16,6 +16,9 @@
         @toastifyCss
     </head>
     <body class="font-sans antialiased">
+        <div class="loader-wrapper" id="loaderWrapper">
+            <div class="loader"></div>
+        </div>
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
             @include('layouts.navigation')
 
