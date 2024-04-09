@@ -17,7 +17,9 @@
     </head>
     <body class="font-sans antialiased">
         <div class="loader-wrapper" id="loaderWrapper">
-            <div class="loader"></div>
+            <div class="loader">
+                <div data-glitch="Loading..." class="glitch">Loading...</div>
+            </div>
         </div>
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
             @include('layouts.navigation')

@@ -9,7 +9,7 @@
             @if($column == "start_at")
                 <input type="date" wire:model.change="search" class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
             @else
-                <x-text-input wire:model.live="search" placeholder="Recherche"></x-text-input>
+                <x-text-input wire:model.live="search" placeholder="Recherche">Recherche</x-text-input>
             @endif
         </div>
         <div>
