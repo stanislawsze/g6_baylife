@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('discord_webhooks', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('discord_webhook');
+            $table->string('discord_webhook')->nullable();
             $table->timestamps();
         });
     }
