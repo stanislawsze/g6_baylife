@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Convoy;
 use App\Models\DiscordRole;
 use App\Models\DiscordUserRole;
+use App\Models\DiscordWebhook;
 use App\Models\Salary;
 use App\Models\User;
 use App\Traits\DiscordWebhookTrait;
@@ -67,9 +68,7 @@ class DiscordRoleHandlerController extends Controller
     public function webhook()
     {
         $this->authorize('manage', DiscordRole::class);
-        $roles = DiscordUserRole::where('user_id', auth()->user()->id)->get('discord_role_id')->toArray();
-        $salary = Salary::whereIn('discord_role_id', $roles)->first();
-        dd($roles,$salary);
+        return view('discord.webhook', ['webhooks' => DiscordWebhook::all()]);
     }
 
     public function timer()
