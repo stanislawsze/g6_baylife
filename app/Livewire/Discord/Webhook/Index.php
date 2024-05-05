@@ -62,14 +62,14 @@ class Index extends Component
             if($editedWebhook)
             {
                 $editedWebhook->update($webhook);
-                toastify()->success('Webhook updated successfully!');
+                toastify()->success('Webhook mis à jour avec succès!');
                 return redirect(route('webhook'));
             }else{
-                toastify()->error('Webhook not found');
+                toastify()->error('Erreur ! Le webhook n\'existe plus');
                 return redirect()->route('webhook');
             }
         }else{
-            toastify()->error('Webhook not found');
+            toastify()->error('Erreur ! Le webhook n\'existe plus');
             return redirect()->route('webhook');
         }
     }
@@ -82,9 +82,7 @@ class Index extends Component
     public function delete($id)
     {
         $webhook = DiscordWebhook::find($id);
-        if($webhook)
-            $webhook->delete();
-        toastify()->success('Webhook deleted successfully!');
+        $webhook ? $webhook->delete() && toastify()->success('Webhook deleted successfully!') : toastify()->error('Webhook n\'existe plus');
         return redirect(route('webhook'));
     }
 

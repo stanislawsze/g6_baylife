@@ -168,4 +168,9 @@ class User extends Authenticatable
     {
         $this->convoys()->attach($convoyId);
     }
+
+    public function employee(): HasOne
+    {
+        return $this->hasOne(Employee::class);
+    }
 }
