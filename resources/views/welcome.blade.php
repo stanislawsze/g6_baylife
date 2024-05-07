@@ -54,10 +54,6 @@
                     quote:"J'arrive après / Je vais manger",
                 },
                 {
-                    link:"{{asset('img/direction/johan.png')}}",
-                    quote:"Mais j'en sais rien je suis pas au courant",
-                },
-                {
                     link:"{{asset('img/direction/bill.png')}}",
                     quote:"Ecureuil ? Clébard !",
                 },
