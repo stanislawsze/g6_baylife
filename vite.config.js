@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
-const host = 'g6-baylife.test';
+const host = 'whale-app-xcux4.ondigitalocean.app';
 export default defineConfig({
     plugins: [
         laravel({
