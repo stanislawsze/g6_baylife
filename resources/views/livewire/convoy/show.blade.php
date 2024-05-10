@@ -12,14 +12,18 @@
                 <li>Prime par agent : @if($convoy->users->count() > 0) ${{number_format(($convoy->convoy_amount/2)/$convoy->users->count(), 2, ',', ' ')}} @else $0 @endif</li>
             </div>
             <div>
+                @if($convoy->is_finished)
+                    <button class="bg-red-400 rounded border p-1">Convoi terminé</button>
+                @else
                 <button wire:click="getAgentOnConvoy" class="bg-g6 text-white p-1 rounded">Mettre à jour la liste des agents</button>
                 <button {{$convoy->is_finished ? 'disabled' : ''}} wire:click="startStopConvoy({{$convoy->id}})" class="{{$convoy->is_finished ? 'bg-red-400' : 'bg-green-500'}} {{$convoy->is_started && !$convoy->is_finished ?? 'bg-red-500'}} rounded border p-1">{{$convoy->is_started ? 'Mettre fin au convoi' : 'Lancer le convoi'}}</button>
+                @endif
             </div>
             @endcan
             <div>
                 @if(auth()->user()->hasEntryInConvoyTable($convoy->id))
-                <x-secondary-button disabled wire:click="joinConvoy({{$convoy->id}})">
-                    Rejoindre le convoi
+                <x-secondary-button disabled>
+                    T'es déjà sur le convoi clébard.
                 </x-secondary-button>
                 @else
                     <x-secondary-button wire:click="joinConvoy({{$convoy->id}})">
@@ -40,8 +44,8 @@
                                 <div class="font-bold text-xl mb-2">{{$c->vehicle->plate}}</div>
                                     @foreach($c->getUserFromVehicle as $u)
                                     <div class="rounded overflow-hidden shadow-lg bg-white dark:bg-gray-500">
-                                        <div class="text-sm text-center" style="background:#{{dechex($u->user->getRole->first()->roles->role_color)}}">
-                                            {{$u->user->getRole->first()->roles->role_name}}
+                                        <div class="text-sm text-center" style="background:#{{dechex($u->user->getRole->roles->role_color)}}">
+                                            {{$u->user->getRole->roles->role_name}}
                                         </div>
                                         <div>
                                             {{$u->user->global_name}}
@@ -82,7 +86,7 @@
                             <td>
                                 <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1
                                 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10 mr-2"
-                                ><span class="border border-1 p-1 rounded-full mr-1"  style="background: #{{dechex($user->getRole->first()->roles->role_color)}}"></span>{{$user->getRole->first()->roles->role_name}}</span>{{$user->global_name}}</td>
+                                ><span class="border border-1 p-1 rounded-full mr-1"  style="background: #{{dechex($user->getRole->roles->role_color)}}"></span>{{$user->getRole->roles->role_name}}</span>{{$user->global_name}}</td>
                             <td class="text-sm text-gray-900 dark:text-gray-200 font-light px-6 py-4 whitespace-nowrap">
                                 @if($user->getCurrentConvoyCancellation($convoy->id))
                                     Indisponible / Raison : {{$user->getCurrentConvoyCancellation($convoy->id)->cancellation_reason}}
@@ -112,7 +116,7 @@
                             </td>
                             <td class="text-sm text-gray-900 dark:text-gray-200 font-light px-6 py-4 whitespace-nowrap">
                                 @can('manage', \App\Models\Convoy::class)
-                                <x-text-input wire:model.blur="userSalary['{{$user->id}}']"></x-text-input>
+                                <x-text-input wire:model.blur="userSalary.{{$user->id}}"></x-text-input>
                                 @endcan
                             </td>
                         </tr>

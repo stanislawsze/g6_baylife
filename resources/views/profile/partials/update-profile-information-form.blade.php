@@ -9,7 +9,7 @@
         </p>
     </header>
 
-    <div class="grid grid-cols-2 gap-8">
+    <div class="grid grid-cols-3 gap-8">
         @if (Auth::user()->global_name)
             <div>
                 <x-input-label for="global_name" :value="__('Display Name')" />
@@ -51,7 +51,7 @@
         </div>
             <div>
                 <x-input-label for="birthday" :value="__('Date de naissance')" />
-                <x-text-input id="birthday" name="birthday" type="date" :value="old('birthday', $user->employee->birthday ?? __('Unknown'))" class="mt-1 block w-full" />
+                <x-text-input id="birthday" name="birthday" type="date" :value="old('birthday', $user->employee->birthday->format('Y-m-d') ?? __('Unknown'))" class="mt-1 block w-full" />
                 <x-input-error class="mt-2" :messages="$errors->get('birthday')" />
             </div>
             <div>
@@ -81,7 +81,7 @@
             </div>
             <div>
                 <x-input-label for="tazer_sn" :value="__('Numéro de série tazer')" />
-                <x-text-input id="tazer_sn" name="tazer_sn" type="text" :value="old('tazer_sn', $user->employee->tazer_sn ?? __('Unknown'))" class="mt-1 block w-full" />
+                <x-text-input id="tazer_sn" name="tazer_sn" type="text" :value="old('tazer_sn', $user->employee->tazer_sn ?? __('Unknown'))" class="mt-1 block w-full" disabled />
                 <x-input-error class="mt-2" :messages="$errors->get('tazer_sn')" />
             </div>
     </div>

@@ -87,7 +87,7 @@ class Show extends Component
         ], [
            'salary' => $this->userSalary[$userId] ?? 0
         ]);
-        toastify()->success('Prime de l\'agent mis à jour.');
+        toastify()->success('Prime calculée et à jour.');
         return redirect(route('convoy.show', ['convoy' => $this->convoy]));
     }
     public function updatePosition($list)
@@ -254,8 +254,15 @@ class Show extends Component
             return redirect(route('convoy.show', ['convoy' => $this->convoy]));
         }
     }
-    public function updateUserSalary($value, $key)
+    public function updatedUserSalary($value, $key)
     {
-        dd($key, $value);
+        SalaryEarned::updateOrCreate([
+            'user_id' => $key,
+            'convoy_id' => $this->convoy->id
+        ], [
+            'salary' => (int) $value
+        ]);
+        toastify()->success('Prime de l\'agent mis à jour.');
+        return redirect(route('convoy.show', ['convoy' => $this->convoy]));
     }
 }

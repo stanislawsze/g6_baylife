@@ -72,7 +72,11 @@ class Index extends Component
             $this->dispatch('stopTimerInterval');
         }
         $webhook = 'https://discord.com/api/webhooks/1207108956204306564/2lvn5QIJh_VwE55AIGOZGtpFtm7PEp7nVlspAFNPWWoc6i-1Ifg7w4sfnTf7vi0EiZw3';
-        $this->sendWebhook($webhook, $message, $this->duration);
+        $this->sendWebhook($webhook, $message, $this->duration, $vehicle->plate, $this->mission);
+        if(!$this->isRunning && $this->endTime != null)
+        {
+            $this->reset();
+        }
     }
 
     public function render(): View
@@ -83,6 +87,8 @@ class Index extends Component
         {
             $currentDuty = $duties->whereNull('stops_at')->first();
             $this->isRunning = true;
+            $this->mission = $currentDuty->mission;
+            $this->vehicleTaken = $currentDuty->vehicle_id;
             $this->startTime = $currentDuty->starts_at;
             $this->serviceType = $currentDuty->service_type;
             $this->refreshTimer();
@@ -139,7 +145,7 @@ class Index extends Component
     {
         $roles = DiscordUserRole::where('user_id', auth()->user()->id)->get('discord_role_id')->toArray();
         $salary = Salary::whereIn('discord_role_id', $roles)->first();
-        if($this->missionType)
+        if($this->serviceType)
         {
             $salaryToEarn = $salary->salary_mission;
         } else {
@@ -149,10 +155,10 @@ class Index extends Component
         return $salaryPerSecond*$time;
     }
 
-    private function sendWebhook($webhook, $message, ?string $duration = '00:00:00'): void
+    private function sendWebhook($webhook, $message, ?string $duration = '00:00:00', ?string $plate = null, string $mission): void
     {
         try{
-            $this->sendDiscordWebhookDuty($webhook, auth()->user(), $message, $duration, $this->serviceType);
+            $this->sendDiscordWebhookDuty($webhook, auth()->user(), $message, $duration, $this->serviceType, $plate, $mission);
         } catch( \Exception $e)
         {
             \Log::debug($e);

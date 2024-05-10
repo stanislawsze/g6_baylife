@@ -68,11 +68,11 @@ class Convoy extends Model
     {
         if($query != null or $query != '')
         {
-            return self::where($column, 'LIKE', '%'.$query.'%');
+            return self::where($column, 'LIKE', '%'.$query.'%')->orderBy('start_at', 'DESC');
         }
         else
         {
-            return self::orderBy('id', 'ASC');
+            return self::orderBy('start_at', 'DESC');
         }
     }
 }

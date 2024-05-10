@@ -17,6 +17,7 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, InteractsWithDiscord;
 
+
     /**
      * The attributes that are mass assignable.
      *
@@ -172,5 +173,10 @@ class User extends Authenticatable
     public function employee(): HasOne
     {
         return $this->hasOne(Employee::class);
+    }
+
+    public function warnings(): HasMany
+    {
+        return $this->hasMany(Warning::class);
     }
 }

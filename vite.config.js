@@ -1,6 +1,5 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
-const host = 'whale-app-xcux4.ondigitalocean.app';
 export default defineConfig({
     plugins: [
         laravel({
@@ -9,12 +8,6 @@ export default defineConfig({
                 'resources/js/app.js',
             ],
             refresh: true,
-            detectTls: host,
         }),
     ],
-    server: {
-        hmr: {
-            host: host,
-        },
-    }
 });

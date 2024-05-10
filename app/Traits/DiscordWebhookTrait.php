@@ -88,7 +88,7 @@ trait DiscordWebhookTrait
         $convoy->discord_message_id = $response->json('id');
         $convoy->save();
     }
-    public function sendDiscordWebhookDuty($webhookUrl, User $user, string $action, ?string $duration = null, int $serviceType)
+    public function sendDiscordWebhookDuty($webhookUrl, User $user, string $action, ?string $duration = null, int $serviceType, string $plate = null, string $mission)
     {
         $timestamp = now()->toIso8601String();
 
@@ -96,27 +96,39 @@ trait DiscordWebhookTrait
 
         if($duration != null)
         {
-            $message = "<@".$user->id."> a $action en $serviceType et celui-ci a duré : $duration";
+            $message = "<@".$user->id."> a $action en $serviceType";
+            $message.= "\n\n⏲️ Durée";
+            $message.= "```".$duration."```";
+            $message .= "\n\n📞 Téléphone";
+            $message .= "```".$user->employee->phone."```";
+            $color = 15548997;
         } else {
             $message = "<@".$user->id."> a $action en $serviceType";
+            $message .= "\n\n📞 Téléphone";
+            $message .= "```".$user->employee->phone."```";
+            $message .= "\n\n🚚 Véhicule";
+            $message .= "```".$plate."```";
+            $message .= "\n\n Commentaire :";
+            $message .= "```".$mission."```";
+            $color = 5763719;
         }
         $data = [
             "embeds" => [
                 [
                     "title" => "Information Intranet",
                     "description" => $message,
-                    "color" => 16711680,
+                    "color" => $color,
                     "timestamp" => $timestamp,
                     "footer" => [
                         "text" => "G6",
-                        "icon_url" => "https://cdn.discordapp.com/icons/869345535318958110/846c9858c39ef37d6d636d50438f6d2a.webp?size=96"
+                        "icon_url" => "https://cdn.discordapp.com/icons/869345535318958110/4f7e094392b6b787f19866a6633b0bf4.webp?size=96"
                     ],
                     "author" => [
                         "name" => "G6 - Assistant Direction",
-                        "icon_url" => "https://cdn.discordapp.com/icons/869345535318958110/846c9858c39ef37d6d636d50438f6d2a.webp?size=96"
+                        "icon_url" => "https://cdn.discordapp.com/icons/869345535318958110/4f7e094392b6b787f19866a6633b0bf4.webp?size=96"
                     ],
                     "thumbnail" => [
-                        "url" => "https://cdn.discordapp.com/icons/869345535318958110/846c9858c39ef37d6d636d50438f6d2a.webp?size=96"
+                        "url" => $user->getAvatar(['extension' => 'webp', 'size' => 32])
                     ],
                 ]
             ]

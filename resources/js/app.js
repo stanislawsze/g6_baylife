@@ -6,7 +6,6 @@ window.Alpine = Alpine;
 Alpine.start();
 
 const loaderWrapper = document.getElementById('loaderWrapper');
-
 // Fonction pour masquer le loader
 function hideLoader() {
     loaderWrapper.style.opacity = '0'; // Définissez l'opacité à 0 pour l'effet de fondu

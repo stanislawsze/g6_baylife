@@ -78,7 +78,11 @@
                             {{$od->mission}}
                         </td>
                         <td class="text-sm text-gray-900 dark:text-gray-200 font-light px-6 py-4 whitespace-nowrap">
-                            <button class="bg-blue-400 p-4" wire:click="joinDuty({{$od->id}})">Rejoindre la {{$od->service_type == 1 ? 'Mission de sécurité' : 'Patrouille'}}</button>
+                            @if($isRunning)
+                                <button class="bg-blue-400 p-4">Tu es déjà en service !</button>
+                            @else
+                                <button class="bg-blue-400 p-4" wire:click="joinDuty({{$od->id}})">Rejoindre la {{$od->service_type == 1 ? 'Mission de sécurité' : 'Patrouille'}}</button>
+                            @endif
                         </td>
                     </tr>
                 @endforeach
