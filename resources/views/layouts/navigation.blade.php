@@ -33,6 +33,12 @@
             </a>
             @endif
             @can('manage', \App\Models\DiscordRole::class)
+                <a href="{{route('list-users')}}">
+                    <img src="{{asset('assets/icon-users.svg')}}">
+                    <span>Liste des agents</span>
+                </a>
+            @endcan
+            @can('manage', \App\Models\DiscordRole::class)
             <a href="{{route('webhook')}}" class="has-border">
                 <img src="{{asset('assets/icon-webhook.svg')}}" />
                 <span>Gestion des webhooks</span>

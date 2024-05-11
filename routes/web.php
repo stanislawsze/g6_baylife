@@ -20,6 +20,7 @@ Route::get('/', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/list-users', [ProfileController::class, 'listUsers'])->name('list-users');
     Route::get('/profile/{id}', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::resource('/roles', DiscordRoleHandlerController::class);
     Route::get('/getDiscordRoles', [DiscordRoleHandlerController::class, 'getDiscordRoles']);
