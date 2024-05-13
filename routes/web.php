@@ -27,4 +27,5 @@ Route::middleware('auth')->group(function () {
     Route::get('/webhook', [DiscordRoleHandlerController::class, 'webhook'])->name('webhook');
     Route::get('/timer', [DiscordRoleHandlerController::class, 'timer'])->name('timer');
     Route::resource('/convoy', ConvoyController::class);
+    Route::get('/vehicles', [\App\Http\Controllers\VehicleController::class, 'index'])->name('vehicles.index');
 });
