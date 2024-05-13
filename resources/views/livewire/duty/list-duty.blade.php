@@ -1,7 +1,7 @@
 <section>
     <header>
         <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-            {{$users->count()}} Agents recensés
+            {{$duties->count()}} missions/patrouilles effectuées
         </h2>
     </header>
 
@@ -14,43 +14,30 @@
                     Nom de l'agent
                 </th>
                 <th scope="col" class="text-sm font-medium text-gray-200 px-6 py-4 text-left">
-                    Grade
+                    Mission
                 </th>
                 <th scope="col" class="text-sm font-medium text-gray-200 px-6 py-4 text-left">
-                    Avertissement(s)
+                    Type de mission
                 </th>
                 <th scope="col" class="text-sm font-medium text-gray-200 px-6 py-4 text-left">
-                    Prime en cours
+                    Date
                 </th>
             </tr>
             </thead>
             <tbody>
-            @foreach($users as $u)
+            @foreach($duties as $d)
                 <tr class="bg-gray-800 border-b transition duration-300 ease-in-out">
                     <td class="text-sm text-gray-200 font-light px-6 py-4 whitespace-nowrap">
                         {{$u->global_name}}
                     </td>
                     <td class="text-sm text-gray-200 font-light px-6 py-4 whitespace-nowrap">
-                        {{$u->getRole->roles->role_name}}
+                        {{$d->mission}}
                     </td>
                     <td class="text-sm text-gray-200 font-light px-6 py-4 whitespace-nowrap">
-                        @switch($u->warnings->count())
-                            @case(0)
-                                <span class="font-bold text-green-500">0</span>
-                            @break
-                            @case(1)
-                                <span class="font-bold text-yellow-500">1</span>
-                                @break
-                            @case(2)
-                                <span class="font-bold text-orange-500">2</span>
-                                @break
-                            @case(3)
-                                <span class="font-bold text-red-500">3</span>
-                                @break
-                        @endswitch
+                        {{$d->service_type ? 'Mission de sécurité' : 'Patrouille'}}
                     </td>
                     <td class="text-sm text-gray-200 font-light px-6 py-4 whitespace-nowrap">
-                        {{number_format($u->convoySalaries()+$u->dutySalary(), 2, ',', ' ')}} $
+                        {{number_format($d->salary)}} $
                     </td>
                     <td class="text-sm text-gray-200 font-light px-6 py-4 whitespace-nowrap flex gap-4">
                         <a class="text-blue-500" href="{{route('profile.edit', ['id' => $u->id])}}">
