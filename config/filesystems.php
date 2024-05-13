@@ -43,6 +43,13 @@ return [
             'visibility' => 'public',
             'throw' => false,
         ],
+        'vehicles' => [
+            'driver' => 'local',
+            'root' => storage_path('app/vehicles'),
+            'url' => env('APP_URL').'/img/vehicle',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
 
         's3' => [
             'driver' => 's3',
@@ -71,6 +78,7 @@ return [
 
     'links' => [
         public_path('storage') => storage_path('app/public'),
+        public_path('img/vehicle') => storage_path('app/vehicles'),
     ],
 
 ];
