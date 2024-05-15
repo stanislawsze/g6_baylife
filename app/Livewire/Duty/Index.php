@@ -48,6 +48,8 @@ class Index extends Component
             ]);
             $vehicle = Vehicle::find($this->vehicleTaken);
             $vehicle->in_use = true;
+            $vehicle->is_maintained = false;
+            $vehicle->is_refuel = false;
             $vehicle->save();
             $message = 'pris son service';
         } else {
@@ -93,7 +95,10 @@ class Index extends Component
             $this->serviceType = $currentDuty->service_type;
             $this->refreshTimer();
         }
-        $availableVehicles = Vehicle::where('in_use', false)->get();
+        $availableVehicles = Vehicle::where([
+            ['in_use', false],
+            ['is_usable_for_convoy', false]
+        ])->get();
         $otherDuties = GoingOnDuty::whereNull('stops_at')->get();
         return view('livewire.duty.index')->with([
             'duties' => $duties,
